@@ -3,11 +3,12 @@ import userRoutes from "./users.routes.js";
 import coinsRoutes from "./coins.routes.js";
 import collectionCoinsRoutes from "./collection_Coins.routes.js";
 import collectioncoinsRoutes from "./collectionCoins.routes.js";
-// import tagsRoutes from "./tags.routes.js";
+import tagsRoutes from "./tags.routes.js";
 import CollectionRoutes from "./CollectionsRoutes.routes.js";
 import userRouter from "./user_collection.routes.js";
 import commentsRouter from "./comments.routes.js";
 import CommentsRouter from "./CommentsRoutes.routes.js";
+import collection_tagsRouter from "./collection_tags.routes.js";
 
 
 const Mainrouter=Router()
@@ -21,7 +22,8 @@ Mainrouter.use("/collections/:id/coins",collectioncoinsRoutes)
 Mainrouter.use("/collection_coins",collectionCoinsRoutes)
 Mainrouter.use("/collections/:id/comments",commentsRouter)
 Mainrouter.use("/comments",CommentsRouter)
-// Mainrouter.use("/tags",tagsRoutes)
+Mainrouter.use("/tags",tagsRoutes)
+Mainrouter.use("/collections/:id/tags",collection_tagsRouter)
 
 
 export default Mainrouter

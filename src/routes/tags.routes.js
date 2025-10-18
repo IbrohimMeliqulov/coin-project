@@ -1,13 +1,15 @@
-// import e, { Router } from "express";
-// import { tagsController } from "../controllers/tags.controller.js";
+import e, { Router } from "express";
+import { tagsController } from "../controllers/tags.controller.js";
+import { validationfactory } from "../middleware/validation.js";
+import { tagsValidation } from "../validation/tagsvalidation.js";
 
 
-// const tagsRoutes=Router()
+const tagsRoutes=Router()
 
 
-// tagsRoutes.get("/",tagsController.getAll)
-// tagsRoutes.post("/",tagsController.create)
-// tagsRoutes.delete("/:id",tagsController.delete)
+tagsRoutes.get("/",tagsController.getTags)
+tagsRoutes.post("/",validationfactory(tagsValidation),tagsController.post)
+tagsRoutes.delete("/:id",tagsController.delete)
 
 
-// export default tagsRoutes
+export default tagsRoutes
