@@ -16,8 +16,9 @@ CREATE TABLE users(
 
 CREATE TABLE collections(
     id SERIAL PRIMARY KEY,
-    user_id INT REFERENCES users(id) ON DELETE SET NULL,
+    user_id INT REFERENCES users(id) ON DELETE CASCADE,
     title VARCHAR(120) NOT NULL,
+    slug VARCHAR(120),
     description TEXT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -39,12 +40,12 @@ CREATE TABLE coins(
 CREATE TABLE collection_coins(
     id SERIAL PRIMARY KEY,
     collection_id INT REFERENCES collections(id) ON DELETE SET NULL,
-    coin_id INT REFERENCES coins(id) ON DELETE SET NULL,
+    coin_id INT REFERENCES coins(id) ON DELETE CASCADE,
+    condition VARCHAR(120) NOT NULL,
     note VARCHAR(120) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-
 
 
 CREATE TABLE trades(
@@ -62,7 +63,7 @@ CREATE TABLE trades(
 CREATE TABLE comments(
     id SERIAL PRIMARY KEY,
     collection_id INT REFERENCES collections(id),
-    user_id INT REFERENCES users(id),
+    user_id INT REFERENCES users(id) ON DELETE CASCADE,
     text TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -71,13 +72,13 @@ CREATE TABLE comments(
 
 CREATE TABLE tags(
     id SERIAL PRIMARY KEY,
-    name VARCHAR(120) NOT NULL
+    name VARCHAR(120) NOT NULL UNIQUE
 );
-
 
 
 CREATE TABLE collection_tags(
     id SERIAL PRIMARY KEY,
-    collection_id INT REFERENCES collections(id),
-    tag_id INT REFERENCES tags(id)
+    collection_id INT REFERENCES collections(id) ON DELETE CASCADE,
+    tag_id INT REFERENCES tags(id) ON DELETE CASCADE
 );
+

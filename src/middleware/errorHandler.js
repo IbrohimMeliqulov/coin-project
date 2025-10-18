@@ -1,4 +1,4 @@
-export const ErrorHandler=(err,req,res)=>{
+export const ErrorHandler=(err,req,res,next)=>{
     console.error(err)
     const status=err.status||500
     let message="Internal server error"
@@ -6,7 +6,7 @@ export const ErrorHandler=(err,req,res)=>{
     if(err.status===400) message="Bad request"
     res.status(status).send({
         success:false,
-        message:err.message
+        message:err.message||err.detail ||err.hint
     })
 }
 
