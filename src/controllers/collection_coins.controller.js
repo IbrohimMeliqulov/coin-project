@@ -1,53 +1,100 @@
 import pool from "../config/database.js";
-import { DeleteFromtable, GetAll, GetOne, UpdateTable } from "../helpers/utils.js";
+import { MainController } from "./main.controller.js";
+
 
 
 
 
 export const collection_coinsController={
-    create:async function(req,res){
+    post:async function(req,res,next){
         try{
+            // const id=req.params.id
+            // console.log(id)
+            // const one=await pool.query(`SELECT * FROM collections WHERE id=$1`,[id])
+            // if(one.rows.length===0) return res.status(404).send({message:`there aren't any collections related to this id ${id}` })
             const {collection_id,coin_id,condition,note}=req.body
-            const query=`INSERT INTO collection_coins(collection_id,coin_id,condition,note) VALUES($1,$2,$3,$4)RETURNING *`
-            const [rows]=await pool.query(query,[collection_id,coin_id,condition,note])
-            return res.status(200).send(rows)
+            const query=`INSERT INTO collection_coins (collection_id,coin_id,condition,note) VALUES($1,$2,$3,$4) RETURNING*`
+            const {rows}=await pool.query(query,[collection_id,coin_id,condition,note])
+            return res.status(201).send({
+                message:`Successfully created`,
+                data:rows
+            })
         }catch(err){
-            throw new Error(err)
+            return next(err)
         }
     },
-    getAll:async function(req,res){
+    getCollection_coins:async function(req,res,next){
         try{
-            const result=await GetAll("collection_coins")
-            return result
+            const {id}=req.params
+            const one=await pool.query(`SELECT * FROM collections WHERE id=$1`,[id])
+            if(one.rows.length===0) return res.status(404).send({message:`There aren't any collections related to this id ${id}`})
+            const {page=1,limit=10,filter,value}=req.query
+            const pageNumber=Number(page)
+            const limitNumber=Number(limit)
+            const offset=(pageNumber-1)*limitNumber
+            if(filter && value){
+                const query=`SELECT * FROM collection_coins WHERE collection_id=$1 AND ${filter} ILIKE $2 LIMIT $3 OFFSET $4`
+                const {rows}=await pool.query(query,[id,`%${value}%`,limitNumber,offset])
+                return res.status(200).send({
+                    page:pageNumber,
+                    limit:limitNumber,
+                    total:rows.length,
+                    data:rows
+                })
+            }else{
+                const query=`SELECT * FROM collection_coins WHERE collection_id=$1 LIMIT $2 OFFSET $3`
+                const {rows}=await pool.query(query,[id,limitNumber,offset])
+                return res.status(200).send({
+                    page:pageNumber,
+                    limit:limitNumber,
+                    total:rows.length,
+                    data:rows
+                })
+            }   
         }catch(err){
-            throw new Error(err)
+            return next(err)
         }
     },
-    getOne:async function(req,res){
+    findOneCollection_coins:async function(req,res,next){
         try{
             const id=req.params.id
-            const result=await GetOne("collection_coins",id,res)
+            const result=MainController.findone(res,"collections_coins",id,next)
             return result
         }catch(err){
-            throw new Error(err)
+            return next(err)
         }
     },
-    update:async function(req,res){
+    update:async function(req,res,next){
         try{
             const id=req.params.id
-            const result=await UpdateTable("collection_coins",id,req,res)
+            const result=MainController.update(req,res,"collection_coins",id,next)
             return result
         }catch(err){
-            throw new Error(err)
+            return next(err)
         }
     },
-    delete:async function(req,res){
+    delete:async function(req,res,next){
         try{
             const id=req.params.id
-            const result=await DeleteFromtable("collection_coins",id,res)
+            const result=MainController.delete(res,"collection_coins",id,next)
             return result
         }catch(err){
-            throw new Error(err)
+            return next(err)
+        }
+    },
+    getCollection_coinsByCoin_id:async function(req,res,next){
+        try{
+            const {coin_id}=req.params
+            const query=`SELECT * FROM collection_coins WHERE coin_id=$1`
+            const {rows}=await pool.query(query,[coin_id])
+            if(rows.length===0) return res.status(404).send({message:`${coin_id} coin_id not found`})
+            return res.status(200).send({
+                message:"data found",
+                datat:rows
+            })
+        }catch(err){
+            return next(err)
         }
     }
+
 }
