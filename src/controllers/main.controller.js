@@ -1,7 +1,7 @@
 import pool from "../config/database.js";
 import format from "pg-format";
 
-export const MainController={
+export const MainController = {
     pagination: async function (req, res, next, tablename) {
         try {
             const { page = 1, limit = 10, filter, value } = req.query
@@ -34,7 +34,7 @@ export const MainController={
     findone: async function (res, tablename, id, next) {
         try {
             const query = format(`SELECT * FROM %I WHERE id=$1`, [tablename])
-            const {rows}=await pool.query(query,[id])
+            const { rows } = await pool.query(query, [id])
             if (rows.length === 0) return res.status(404).send({ message: `${id} not found` })
             return res.status(200).send({
                 message: `${id} found`,
@@ -44,7 +44,7 @@ export const MainController={
             return next(err)
         }
     },
-    update: async function (req, res, tablename,id, next) {
+    update: async function (req, res, tablename, id, next) {
         try {
             const one = await pool.query(`SELECT * FROM ${tablename} WHERE id=$1`, [id])
             if (one.rows.length === 0) return res.status(404).send({ message: `${id} not found` })
