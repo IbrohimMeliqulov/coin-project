@@ -12,20 +12,19 @@ import collection_tagsRouter from "./collection_tags.routes.js";
 import tradesRouter from "./trades.routes.js";
 
 
-const Mainrouter=Router()
+const Mainrouter = Router()
 
 
-Mainrouter.use("/users",userRoutes)
-Mainrouter.use("/collections",CollectionRoutes)
-Mainrouter.use("/user_collections",userRouter)
-Mainrouter.use("/coins",coinsRoutes)
-Mainrouter.use("/collections/:id/coins",collectioncoinsRoutes)
-Mainrouter.use("/collection_coins",collectionCoinsRoutes)
-Mainrouter.use("/collections/:id/comments",commentsRouter)
-Mainrouter.use("/comments",CommentsRouter)
-Mainrouter.use("/tags",tagsRoutes)
-Mainrouter.use("/collections/:id/tags",collection_tagsRouter)
-Mainrouter.use("/trades",tradesRouter)
-
+Mainrouter.use("/users", userRoutes)
+Mainrouter.use("/collections", CollectionRoutes)
+Mainrouter.use("/user_collections", userRouter)
+Mainrouter.use("/coins", coinsRoutes)
+Mainrouter.use("/collections/:id/coins", collectioncoinsRoutes)
+Mainrouter.use("/collection_coins", collectionCoinsRoutes)
+Mainrouter.use("/collections/:id/comments", commentsRouter)
+Mainrouter.use("/comments", CommentsRouter)
+Mainrouter.use("/tags", tagsRoutes)
+Mainrouter.use("/collections/:id/tags", collection_tagsRouter)
+Mainrouter.use("/trades", tradesRouter)
 
 export default Mainrouter
