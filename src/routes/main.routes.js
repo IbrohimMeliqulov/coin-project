@@ -9,6 +9,7 @@ import userRouter from "./user_collection.routes.js";
 import commentsRouter from "./comments.routes.js";
 import CommentsRouter from "./CommentsRoutes.routes.js";
 import collection_tagsRouter from "./collection_tags.routes.js";
+import tradesRouter from "./trades.routes.js";
 
 
 const Mainrouter=Router()
@@ -24,6 +25,7 @@ Mainrouter.use("/collections/:id/comments",commentsRouter)
 Mainrouter.use("/comments",CommentsRouter)
 Mainrouter.use("/tags",tagsRoutes)
 Mainrouter.use("/collections/:id/tags",collection_tagsRouter)
+Mainrouter.use("/trades",tradesRouter)
 
 
 export default Mainrouter

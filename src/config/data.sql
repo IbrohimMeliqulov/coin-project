@@ -53,11 +53,10 @@ CREATE TABLE trades(
     from_user_id INT REFERENCES users(id) ON DELETE SET NULL,
     to_user_id INT REFERENCES users(id) ON DELETE SET NULL,
     coin_id INT REFERENCES coins(id) ON DELETE SET NULL,
-    status trade_status,
+    status trade_status DEFAULT 'pending',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-
 
 
 CREATE TABLE comments(
